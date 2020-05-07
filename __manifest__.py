@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "school_finance",
+    'name': "School finances",
 
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+    'summary': """ Finance addons for schools """,
 
-    'description': """
-        Long description of module's purpose
-    """,
+    'description': """ Finance addon """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "Eduwebgroup",
+    'website': "http://www.Eduwebgroup.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Accounting',
-    'version': '0.2',
+    'category': 'Invoicing',
+    'version': '0.5.1',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -29,11 +25,18 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+
+        # Actions
+        'data/sale_order_actions.xml',
+
+        # Views
         'views/views.xml',
         'views/templates.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
+        'views/config_views.xml',
+
+        # Wizards
+        'wizard/res_partner_make_sale.xml',
+
+
     ],
 }
