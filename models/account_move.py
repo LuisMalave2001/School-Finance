@@ -2,7 +2,7 @@
 
 from odoo import fields, models
 
-class Invoice(models.Model):
+class AccountMove(models.Model):
     _inherit = "account.move"
 
     student_id = fields.Many2one("res.partner", string="Student", domain=[('person_type', '=', 'student')])
@@ -10,11 +10,12 @@ class Invoice(models.Model):
 
     family_members_ids = fields.Many2many(related="family_id.member_ids")
 
+    receivable_account_id = fields.Many2one("account.account", string="Receivable account", domain=[("user_type_id.type", "=", "receivable")])
 
-class Invoice(models.Model):
-    _inherit = "account.journal"
+    def set_receivable_account(self):
+        for record in self:
+            receivable_line_id = record.line_ids.filtered(lambda record: record.account_id.user_type_id.type == 'receivable')
+            receivable_line_id.ensure_one()
+            if (receivable_line_id and record.receivable_account_id):
+                receivable_line_id.account_id = record.receivable_account_id.id
 
-    template_with_payment_id = fields.Many2one("ir.ui.view", string="Template with payment",
-                                                 domain=[("type", "=", "qweb")], default=lambda self: self.env.ref('account.report_invoice_document_with_payments'))
-    template_id = fields.Many2one("ir.ui.view", string="Template without payment",
-                                   domain=[("type", "=", "qweb")], default=lambda self: self.env.ref('account.report_invoice_document'))
