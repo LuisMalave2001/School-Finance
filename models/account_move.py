@@ -11,8 +11,7 @@ class AccountMove(models.Model):
     family_id = fields.Many2one("res.partner", string="Family", domain=[('is_family', '=', True)])
 
     family_members_ids = fields.Many2many(related="family_id.member_ids")
-    receivable_account_id = fields.Many2one("account.account", string="Receivable account",
-                                            domain=[("user_type_id.type", "=", "receivable")])
+    receivable_account_id = fields.Many2one("account.account", string="Receivable account", domain=[("user_type_id.type", "=", "receivable")])
 
     is_in_debug_mode = fields.Boolean(compute="compute_is_in_debug_mode")
 
@@ -29,12 +28,12 @@ class AccountMove(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if "student_id" in vals and vals["student_id"]:
-                student_id = self.env["res.partner"].browse([vals["studen_id"]])
+                student_id = self.env["res.partner"].browse([vals["student_id"]])
                 if student_id:
                     if "student_grade_level" not in vals:
                         vals["student_grade_level"] = student_id.grade_level_id.id
-                    if "homeroom" not in vals:
-                        vals["homeroom"] = student_id.homeroom
+                    if "student_homeroom" not in vals:
+                        vals["student_homeroom"] = student_id.homeroom
 
         return super().create(vals_list)
 
@@ -58,3 +57,6 @@ class AccountMove(models.Model):
             receivable_line_id.ensure_one()
             if receivable_line_id and record.receivable_account_id:
                 receivable_line_id.account_id = record.receivable_account_id.id
+
+
+
